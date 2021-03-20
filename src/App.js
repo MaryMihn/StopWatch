@@ -7,7 +7,6 @@ function App() {
   const [time, setTime] = useState(0)
   const [timerOn, setTimerOn]= useState(false);
 
-
   useEffect(() => {
     const unsubscribe$ = new Subject()
     interval(1000)
@@ -36,36 +35,36 @@ const doubleClick$ = click$.pipe(
     filter(x=> x===2)
   )
 
-//   doubleClick$.subscribe(()=>{
-//   console.log("double");
-// })
   return (
-    <>
+    <div className="App">
       <div>
         <span>{("0" + Math.floor((time/3600000) % 60)).slice(-2)}:</span>
         <span>{("0" + Math.floor((time/60000) % 60)).slice(-2)}:</span>
         <span>{("0" + Math.floor((time/1000) % 60)).slice(-2)}</span>
       </div>
-      <button onClick={()=>{
-        if(timerOn){
+      <div>
+        <button onClick={()=>{
+          if(timerOn){
+            setTime(0)
+            setTimerOn(!timerOn)
+          } else {
+            setTimerOn(!timerOn)
+          }
+          }}>
+            Start/Stop
+          </button>
+        <button onClick ={()=>{
+          doubleClick$.subscribe(()=>{
+            setTimerOn(false)
+          })
+        }}>Wait</button>
+        <button onClick={() => {
           setTime(0)
-          setTimerOn(!timerOn)
-        } else {
-          setTimerOn(!timerOn)
-        }
-        }}>
-          Start/Stop
-        </button>
-      <button onClick ={()=>{
-        doubleClick$.subscribe(()=>{
-          console.log("double");
-        })
-      }}>Wait</button>
-      <button onClick={() => {
-        setTime(0)
-        setTimerOn(true)
-      }}>Reset</button>
-    </>
+          setTimerOn(true)
+        }}>Reset</button>
+      </div>
+    
+    </div>
   );
 }
 
