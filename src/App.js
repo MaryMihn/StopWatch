@@ -24,18 +24,21 @@ function App() {
     }
   }, [timerOn])
 
-  // const click$ = new Subject();
-  // const doubleClick$ = this.click$.pipe(
-  //   buffer(
-  //     this.click$.pipe(debounceTime(300))
-  //   ),
-  //   map (list =>{
-  //     return list.length
-  //   }),
-  //   filter(x=> x===2)
-  // )
 
+const click$ = fromEvent(document, 'click')
+const doubleClick$ = click$.pipe(
+    buffer(
+      click$.pipe(debounceTime(300))
+    ),
+    map (list =>{
+      return list.length
+    }),
+    filter(x=> x===2)
+  )
 
+//   doubleClick$.subscribe(()=>{
+//   console.log("double");
+// })
   return (
     <>
       <div>
@@ -53,7 +56,11 @@ function App() {
         }}>
           Start/Stop
         </button>
-      <button onDoubleClick={() => setTimerOn(false)}>Wait</button>
+      <button onClick ={()=>{
+        doubleClick$.subscribe(()=>{
+          console.log("double");
+        })
+      }}>Wait</button>
       <button onClick={() => {
         setTime(0)
         setTimerOn(true)
